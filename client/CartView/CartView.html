@@ -1,0 +1,17 @@
+<template name="CartView">
+  <h2>Cart ({{cart_items_count}} items)</h2>
+  <hr />
+  <ul>
+    {{#each cart_items}}
+      <li>
+        {{product.name}} -
+        <strong>${{product.price}}</strong>/product -
+        <em>{{quantity}} units, ${{total_item_price}} total</em>
+        <button class="increase">Increase</button>
+        <button class="decrease">Decrease</button>
+        <button class="remove">Remove</button>
+      </li>
+    {{/each}}
+  </ul>
+  <h3>Total: ${{total_cart_price}}</h3>
+</template>

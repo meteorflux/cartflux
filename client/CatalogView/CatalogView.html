@@ -1,0 +1,22 @@
+<template name="CatalogView">
+  <h2>Catalog ({{catalog_products_count}} products)</h2>
+  <hr />
+  <ul>
+    {{#each catalog_products}}
+      <li>
+        {{name}} -
+        <strong>${{price}}</strong>
+        <button class="add_cart_item">Add to cart</button>
+        <button class="remove_product">Remove product</button>
+      </li>
+    {{/each}}
+  </ul>
+  <h3>Add Product:</h3>
+  <label>Name: </label>
+  <input id="product_name" value="" placeholder="Product Name">
+  <label>Price: $</label>
+  <input id="product_price" value="" placeholder="1">
+  <button class="add_product">Add Product</button>
+  <div class="error">{{catalog_error}}</div>
+  <div class="">or <button class="add_another_product">Add Another Product</button></div>
+</template>
