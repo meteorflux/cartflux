@@ -1,17 +1,33 @@
 <template name="CartView">
-  <h2>Cart ({{cart_items_count}} items)</h2>
-  <hr />
-  <ul>
-    {{#each cart_items}}
-      <li>
-        {{product.name}} -
-        <strong>${{product.price}}</strong>/product -
-        <em>{{quantity}} units, ${{total_item_price}} total</em>
-        <button class="increase">Increase</button>
-        <button class="decrease">Decrease</button>
-        <button class="remove">Remove</button>
-      </li>
-    {{/each}}
-  </ul>
-  <h3>Total: ${{total_cart_price}}</h3>
+  {{#if cart_items_count}}
+    <h4 class="grey-text text-darken-2">Cart ({{cart_items_count}} items)</h4>
+    <hr />
+    <table class="bordered striped responsive-table">
+      <thead>
+        <tr>
+            <th>Name</th>
+            <th>Item Price</th>
+            <th>Quantity</th>
+            <th>Total Price</th>
+            <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      {{#each cart_items}}
+        <tr>
+          <td>{{product.name}}</td>
+          <td>${{product.price}}</td>
+          <td>{{quantity}}</td>
+          <td>${{total_item_price}}</td>
+          <td>
+            <button class="waves-effect waves-light btn increase"><i class="mdi-content-add"></i></button>
+            <button class="waves-effect waves-light btn decrease"><i class="mdi-content-remove"></i></button>
+            <button class="waves-effect waves-light btn red lighten-2 remove"><i class="mdi-content-clear"></i></button>
+          </td>
+        </tr>
+      {{/each}}
+      </tbody>
+    </table>
+    <h5 class="grey-text text-darken-2">Total: ${{total_cart_price}}</h5>
+  {{/if}}
 </template>

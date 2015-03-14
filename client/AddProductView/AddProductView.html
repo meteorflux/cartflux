@@ -1,0 +1,35 @@
+<template name="AddProductView">
+  <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+    <a class="btn-floating btn-large blue lighten-2 open-add-product waves-effect">
+      <i class="large mdi-content-add"></i>
+    </a>
+  </div>
+  
+  <!-- Modal -->
+  <div id="modal1" class="modal modal-fixed-footer">
+    <div class="modal-content">
+      <h4>Add Product</h4>
+      <div class="row">
+        <div class="input-field col s6">
+          <input id="product_name" type="text" class="validate">
+          <label for="product_name">Product Name</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s6">
+          <input id="product_price" type="text" class="validate">
+          <label for="product_price">Price ($)</label>
+        </div>
+      </div>
+      <button class="waves-effect waves-light btn add_product">Add Product</button>
+      <div class="error">{{catalog_error}}</div>
+      <br /><br />
+      <div class="">
+        Or maybe you want to add it automatically:<br>
+        <button class="waves-effect waves-light btn deep-purple lighten-2 add_another_product">Automatic Product</button></div>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="waves-effect waves-green btn-flat close-add-product">Cancel</a>
+    </div>
+  </div>
+</template>

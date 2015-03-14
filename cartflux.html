@@ -2,10 +2,21 @@
   <title>MeteorFlux · CartFlux</title>
 </head>
 
-<body>
-  {{> CatalogView}}
-  {{> CartView}}
-
-  Example to show how to use <a href="https://github.com/MeteorFlux/Dispatcher">MeteorFlux Dispatcher</a>.<br />
-  See the code at <a href="https://github.com/MeteorFlux/CartFlux">Github</a>.
+<body class="grey lighten-4">
+  <main>
+    <div class="container">
+      {{> CatalogView}}
+      {{> CartView}}
+    </div>
+    {{> AddProductView}}
+  </main>
+  <footer class="page-footer">
+    <div class="footer-copyright">
+      <div class="container">
+        <a class="grey-text text-lighten-4 left" href="https://github.com/MeteorFlux/Dispatcher">Example to show how to use MeteorFlux Dispatcher</a>
+        <a class="grey-text text-lighten-4 right" href="https://github.com/MeteorFlux/CartFlux">See the code at Github</a>
+      </div>
+    </div>
+  </footer>
+  
 </body>
