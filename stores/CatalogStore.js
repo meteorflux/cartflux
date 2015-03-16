@@ -2,13 +2,12 @@
 CatalogStore = {
   addProduct: function(name,price){
     if (name === '') {
-      Session.set("Catalog.AddProductError", "wrong-name");
+      CatalogStore.userIsAddingProduct("wrong-name");
     } else if ((price === '')||(!$.isNumeric(price))){
-      Session.set("Catalog.AddProductError", "wrong-price");
+      CatalogStore.userIsAddingProduct("wrong-price");
     } else {
       Catalog.insert({name:name, price:price});
-      Session.set("Catalog.AddProductError", false);
-      Session.set("Catalog.OpenAddProduct", false);
+      CatalogStore.userIsAddingProduct(false);
     }
   },
   addAnotherProduct: function(){
@@ -18,11 +17,8 @@ CatalogStore = {
   removeProduct: function(id){
     Catalog.remove(id);
   },
-  openAddProduct: function(){
-    Session.set("Catalog.OpenAddProduct", true);
-  },
-  closeAddProduct: function(){
-    Session.set("Catalog.OpenAddProduct", false);
+  userIsAddingProduct: function( state ){
+    Session.set("Catalog.userIsAddingProduct", state);
   }
 };
 
@@ -38,11 +34,11 @@ CatalogStore.tokenId = Dispatcher.register(function(payload){
     case "ADD_ANOTHER_PRODUCT":
       CatalogStore.addAnotherProduct();
       break;
-    case "OPEN_ADD_PRODUCT":
-      CatalogStore.openAddProduct();
+    case "USER_IS_ADDING_PRODUCT":
+      CatalogStore.userIsAddingProduct(true);
       break;
-    case "CLOSE_ADD_PRODUCT":
-      CatalogStore.closeAddProduct();
+    case "USER_IS_NOT_ADDING_PRODUCT":
+      CatalogStore.userIsAddingProduct(false);
       break;
   }
 });

@@ -1,9 +1,9 @@
 Template.AddProductView.events({
   'click .open-add-product': function(evt, tpl){
-    Dispatcher.dispatch({actionType: "OPEN_ADD_PRODUCT"});
+    Dispatcher.dispatch({actionType: "USER_IS_ADDING_PRODUCT"});
   },
   'click .close-add-product': function(){
-    Dispatcher.dispatch({actionType: "CLOSE_ADD_PRODUCT"});
+    Dispatcher.dispatch({actionType: "USER_IS_NOT_ADDING_PRODUCT"});
   },
   'click .add_product': function(){
     Dispatcher.dispatch({ actionType: "ADD_PRODUCT", product: {
@@ -17,13 +17,13 @@ Template.AddProductView.events({
 Template.AddProductView.helpers({
   catalog_error: function(){
     // process the error in the frontend
-    if (Session.get("Catalog.AddProductError") === false){
+    if (Session.get("Catalog.userIsAddingProduct") === false){
       $('#product_name').val('');
       $('#product_price').val('');
       return "";
-    } else if (Session.get("Catalog.AddProductError") === "wrong-name") {
+    } else if (Session.get("Catalog.userIsAddingProduct") === "wrong-name") {
       return "Please provide a valid name.";
-    } else if (Session.get("Catalog.AddProductError") === "wrong-price") {
+    } else if (Session.get("Catalog.userIsAddingProduct") === "wrong-price") {
       return "Please provide a valid price.";
     }
   }
@@ -31,13 +31,13 @@ Template.AddProductView.helpers({
 
 Template.AddProductView.onRendered(function(){
   Tracker.autorun(function(){
-    if (Session.get("Catalog.OpenAddProduct") === true) {
+    if (Session.get("Catalog.userIsAddingProduct") === true) {
       $('#modal1').openModal({dismissible: false});
-    } else {
+    } else if (Session.get("Catalog.userIsAddingProduct") === false) {
       $('#modal1').closeModal();
     }
     $('#lean-overlay').click(function(){
-      Dispatcher.dispatch({actionType: "CLOSE_ADD_PRODUCT"});
+      Dispatcher.dispatch({actionType: "USER_IS_NOT_ADDING_PRODUCT"});
     });
   });
   
