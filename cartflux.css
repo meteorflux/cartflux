@@ -8,8 +8,3 @@ body {
 main {
   flex: 1 0 auto;
 }
-
-.error{
-  margin: 10px 0 10px 0;
-  color:red;
-}

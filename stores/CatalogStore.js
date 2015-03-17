@@ -1,3 +1,6 @@
+// CatalogStore Collections
+Catalog       = new Mongo.Collection('catalog');
+
 // CatalogStore Methods
 CatalogStore = {
   addProduct: function(name,price){
@@ -17,10 +20,38 @@ CatalogStore = {
   removeProduct: function(id){
     Catalog.remove(id);
   },
-  userIsAddingProduct: function( state ){
+  userIsAddingProduct: function(state){
     Session.set("Catalog.userIsAddingProduct", state);
+  },
+  searchProducts: function(search){
+    Session.set("Catalog.searchProductsQuery", search);
+  },
+  userHasPressedEsc: function(){
+    if (Session.get("Catalog.userIsAddingProduct") === true){
+      Session.set("Catalog.userIsAddingProduct", false);
+    }
   }
 };
+
+// CatalogStore Subscriptions
+if (Meteor.isClient){
+  // CatalogStore.catalogSearch Subscription
+  Session.set("Catalog.searchProductsQuery", "");
+  Session.set('Catalog.searchProductsLoaded', false);
+  Tracker.autorun(function (){
+    Meteor.subscribe('Catalog.catalogSearch', Session.get("Catalog.searchProductsQuery"), function(){
+      Session.set('Catalog.searchProductsLoaded', true);
+    });
+  });
+}
+
+// CatalogStore Publications
+if (Meteor.isServer) {
+  Meteor.publish('Catalog.catalogSearch', function(search) {
+    var regexp = new RegExp(search, 'i');
+    return Catalog.find({name: regexp});
+});
+}
 
 // CatalogStore Callbacks
 CatalogStore.tokenId = Dispatcher.register(function(payload){
@@ -39,6 +70,12 @@ CatalogStore.tokenId = Dispatcher.register(function(payload){
       break;
     case "USER_IS_NOT_ADDING_PRODUCT":
       CatalogStore.userIsAddingProduct(false);
+      break;
+    case "USER_HAS_SEARCHED_PRODUCTS":
+      CatalogStore.searchProducts(payload.search);
+      break;
+    case "USER_HAS_PRESSED_ESC":
+      CatalogStore.userHasPressedEsc();
       break;
   }
 });

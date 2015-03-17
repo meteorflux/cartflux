@@ -40,5 +40,4 @@ Template.AddProductView.onRendered(function(){
       Dispatcher.dispatch({actionType: "USER_IS_NOT_ADDING_PRODUCT"});
     });
   });
-  
 });
