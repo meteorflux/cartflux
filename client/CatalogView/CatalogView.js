@@ -1,10 +1,11 @@
 // CatalogView Helpers
 Template.CatalogView.helpers({
   catalog_products: function(){
-    return Catalog.find();
+    var regexp = new RegExp(Session.get("Catalog.searchProductsQuery"), 'i');
+    return Catalog.find({name: regexp});
   },
-  catalog_products_count: function(){
-    return Catalog.find().count();
+  catalog_products_not_loaded: function(){
+    return !Session.get("Catalog.searchProductsLoaded");
   }
 });
 
