@@ -3,36 +3,35 @@
   <div class="row">
     <hr />
     <div class="col s12">
-      {{#if catalog_products_not_loaded}}
-      <div class="preloader-wrapper big active">
-       <div class="spinner-layer spinner-red-only">
-         <div class="circle-clipper left">
-           <div class="circle"></div>
-         </div>
-       </div>
-      </div>
-      {{else}}
-      <table class="bordered striped responsive-table">
-        <thead>
-          <tr>
-              <th>Name</th>
-              <th>Price</th>
-              <th></th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {{#each catalog_products}}
+      {{#if Template.subscriptionsReady}}
+        <table class="bordered striped responsive-table">
+          <thead>
             <tr>
-              <td>{{name}}</td>
-              <td>${{price}}</td>
-              <td>
-                <button class="btn waves-effect waves-light teal lighten-2 add_cart_item">Add to cart</button>
-                <button class="btn waves-effect waves-light red lighten-2 remove_product">Remove</button></td>
+                <th>Name</th>
+                <th>Price</th>
+                <th></th>
             </tr>
-          {{/each}}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {{#each catalog_products}}
+              <tr>
+                <td>{{name}}</td>
+                <td>${{price}}</td>
+                <td>
+                  <button class="btn waves-effect waves-light teal lighten-2 add_cart_item">Add to cart</button>
+                  <button class="btn waves-effect waves-light red lighten-2 remove_product">Remove</button></td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      {{else}}
+        <div class="preloader-wrapper big active">
+         <div class="spinner-layer spinner-red-only">
+           <div class="circle-clipper left">
+             <div class="circle"></div>
+           </div>
+         </div>
+        </div>
       {{/if}}
     </div>
   </div>

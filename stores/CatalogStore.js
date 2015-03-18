@@ -1,5 +1,5 @@
 // CatalogStore Collections
-Catalog       = new Mongo.Collection('catalog');
+Catalog = new Mongo.Collection('catalog');
 
 // CatalogStore Methods
 CatalogStore = {
@@ -27,30 +27,16 @@ CatalogStore = {
     Session.set("Catalog.searchProductsQuery", search);
   },
   userHasPressedEsc: function(){
-    if (Session.get("Catalog.userIsAddingProduct") === true){
-      Session.set("Catalog.userIsAddingProduct", false);
-    }
+    Session.set("Catalog.userIsAddingProduct", false);
   }
 };
-
-// CatalogStore Subscriptions
-if (Meteor.isClient){
-  // CatalogStore.catalogSearch Subscription
-  Session.set("Catalog.searchProductsQuery", "");
-  Session.set('Catalog.searchProductsLoaded', false);
-  Tracker.autorun(function (){
-    Meteor.subscribe('Catalog.catalogSearch', Session.get("Catalog.searchProductsQuery"), function(){
-      Session.set('Catalog.searchProductsLoaded', true);
-    });
-  });
-}
 
 // CatalogStore Publications
 if (Meteor.isServer) {
   Meteor.publish('Catalog.catalogSearch', function(search) {
-    var regexp = new RegExp(search, 'i');
+    var regexp = new RegExp(search || "", 'i');
     return Catalog.find({name: regexp});
-});
+  });
 }
 
 // CatalogStore Callbacks

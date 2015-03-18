@@ -3,9 +3,6 @@ Template.CatalogView.helpers({
   catalog_products: function(){
     var regexp = new RegExp(Session.get("Catalog.searchProductsQuery"), 'i');
     return Catalog.find({name: regexp});
-  },
-  catalog_products_not_loaded: function(){
-    return !Session.get("Catalog.searchProductsLoaded");
   }
 });
 
@@ -17,4 +14,12 @@ Template.CatalogView.events({
   'click .remove_product': function(){
     Dispatcher.dispatch({ actionType: "REMOVE_PRODUCT", product: this });
   }
+});
+
+// CatalogView Subscriptions
+Template.CatalogView.onCreated(function () {
+  var self = this;
+  self.autorun(function () {
+    self.subscribe("Catalog.catalogSearch", Session.get("Catalog.searchProductsQuery"));
+  });
 });
