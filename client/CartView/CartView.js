@@ -35,3 +35,11 @@ Template.CartView.events({
     Dispatcher.dispatch({ actionType: "REMOVE_CART_ITEM", item: this });
   }
 });
+
+// CartView subscriptions
+Template.CartView.onCreated(function () {
+  var self = this;
+  self.autorun(function(){
+    self.subscribe("Cart.productsInCart",Cart.find().fetch());
+  });
+});
