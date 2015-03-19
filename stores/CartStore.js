@@ -3,30 +3,43 @@ Cart = new Mongo.Collection(null); // client side only
 
 // CartStore Methods
 CartStore = {
-  addCartItem: function(product_id){
+  // Callbacks
+  onAddCartItem: function(product_id){
     var cart_item = Cart.findOne({product_id: product_id});
     if ( !cart_item ) {
       Cart.insert({quantity: 1, product_id: product_id});
     } else {
-      CartStore.increaseCartItem(cart_item._id);
+      CartStore.onIncreaseCartItem(cart_item._id);
     }
   },
-  increaseCartItem: function(id){
+  onIncreaseCartItem: function(id){
     Cart.update(id, {$inc: {quantity: 1}});
   },
-  decreaseCartItem: function(id){
+  onDecreaseCartItem: function(id){
     var cart_item = Cart.findOne(id);
     if ( cart_item.quantity === 1 ){
-      CartStore.removeCartItem(id);
+      CartStore.onRemoveCartItem(id);
     } else {
       Cart.update(id, {$inc: {quantity: -1}});
     }
   },
-  removeCartItem: function(id){
+  onRemoveCartItem: function(id){
     Cart.remove(id);
   },
-  removeProduct: function(product_id){
-    CartStore.removeCartItem(Cart.findOne({product_id: product_id}));
+  onRemoveProduct: function(product_id){
+    CartStore.onRemoveCartItem(Cart.findOne({product_id: product_id}));
+  },
+  
+  // Getters
+  getItems: function(){
+    return Cart.find();
+  },
+  
+  // Subscriptions
+  subsProductsInCart: function(template){
+    template.autorun(function(){
+      template.subscribe("Cart.productsInCart", CartStore.getItems().fetch());
+    });
   }
 };
 
@@ -41,19 +54,19 @@ if (Meteor.isServer) {
 CartStore.tokenId = Dispatcher.register(function(payload){
   switch(payload.actionType){
     case "ADD_CART_ITEM":
-      CartStore.addCartItem(payload.item._id);
+      CartStore.onAddCartItem(payload.item._id);
       break;
     case "INCREASE_CART_ITEM":
-      CartStore.increaseCartItem(payload.item._id);
+      CartStore.onIncreaseCartItem(payload.item._id);
       break;
     case "DECREASE_CART_ITEM":
-      CartStore.decreaseCartItem(payload.item._id);
+      CartStore.onDecreaseCartItem(payload.item._id);
       break;
     case "REMOVE_CART_ITEM":
-      CartStore.removeCartItem(payload.item._id);
+      CartStore.onRemoveCartItem(payload.item._id);
       break;
     case "REMOVE_PRODUCT":
-      CartStore.removeProduct(payload.product._id);
+      CartStore.onRemoveProduct(payload.product._id);
       break;
   }
 });

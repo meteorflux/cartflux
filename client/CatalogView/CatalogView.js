@@ -1,8 +1,7 @@
 // CatalogView Helpers
 Template.CatalogView.helpers({
   catalog_products: function(){
-    var regexp = new RegExp(Session.get("Catalog.searchProductsQuery"), 'i');
-    return Catalog.find({name: regexp});
+    return CatalogStore.getSearchedProducts();
   }
 });
 
@@ -18,8 +17,5 @@ Template.CatalogView.events({
 
 // CatalogView Subscriptions
 Template.CatalogView.onCreated(function () {
-  var self = this;
-  self.autorun(function () {
-    self.subscribe("Catalog.catalogSearch", Session.get("Catalog.searchProductsQuery"));
-  });
+  CatalogStore.subsSearchedProducts(this);
 });
