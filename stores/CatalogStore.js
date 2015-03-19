@@ -1,40 +1,65 @@
 // CatalogStore Collections
 Catalog = new Mongo.Collection('catalog');
 
+// Local Reactive Vars
+var adding_product = new ReactiveVar(false);
+var search_query = new ReactiveVar("");
+
 // CatalogStore Methods
 CatalogStore = {
-  addProduct: function(name,price){
+  // Callbacks
+  onAddProduct: function(name,price){
     if (name === '') {
-      CatalogStore.userIsAddingProduct("wrong-name");
+      adding_product.set("wrong-name");
     } else if ((price === '')||(!$.isNumeric(price))){
-      CatalogStore.userIsAddingProduct("wrong-price");
+      adding_product.set("wrong-price");
     } else {
       Catalog.insert({name:name, price:price});
-      CatalogStore.userIsAddingProduct(false);
+      adding_product.set(false);
     }
   },
-  addAnotherProduct: function(){
+  onAddAnotherProduct: function(){
     var number = Catalog.find().count() + 1;
-    CatalogStore.addProduct("Product "+number, number);
+    CatalogStore.onAddProduct("Product "+number, number);
   },
-  removeProduct: function(id){
+  onRemoveProduct: function(id){
     Catalog.remove(id);
   },
-  userIsAddingProduct: function(state){
-    Session.set("Catalog.userIsAddingProduct", state);
+  onUserIsAddingProduct: function(state){
+    adding_product.set(state);
   },
-  searchProducts: function(search){
-    Session.set("Catalog.searchProductsQuery", search);
+  onUserHasPressedEsc: function(){
+    adding_product.set(false);
   },
-  userHasPressedEsc: function(){
-    Session.set("Catalog.userIsAddingProduct", false);
+  onSearchProducts: function(search){
+    search_query.set(search);
+  },
+  
+  // Getters
+  getSearchedProducts: function(){
+    var regexp = new RegExp(search_query.get(), 'i');
+    return Catalog.find({name: regexp});
+  },
+  getOneProduct: function(id){
+    return Catalog.findOne(id);
+  },
+  getUserIsAddingProduct: function(){
+    return adding_product.get();
+  },
+  
+  // Subscriptions
+  subsSearchedProducts: function(template){
+    template.autorun(function(){
+      template.subscribe("Catalog.searchedProducts", search_query.get());
+    });
   }
 };
 
 // CatalogStore Publications
 if (Meteor.isServer) {
-  Meteor.publish('Catalog.catalogSearch', function(search) {
-    var regexp = new RegExp(search || "", 'i');
+  Meteor.publish('Catalog.searchedProducts', function(search) {
+    //Meteor._sleepForMs(500);
+    var regexp = new RegExp(search, 'i');
     return Catalog.find({name: regexp});
   });
 }
@@ -43,25 +68,25 @@ if (Meteor.isServer) {
 CatalogStore.tokenId = Dispatcher.register(function(payload){
   switch(payload.actionType){
     case "ADD_PRODUCT":
-      CatalogStore.addProduct(payload.product.name, payload.product.price);
+      CatalogStore.onAddProduct(payload.product.name, payload.product.price);
       break;
     case "REMOVE_PRODUCT":
-      CatalogStore.removeProduct(payload.product._id);
+      CatalogStore.onRemoveProduct(payload.product._id);
       break;
     case "ADD_ANOTHER_PRODUCT":
-      CatalogStore.addAnotherProduct();
+      CatalogStore.onAddAnotherProduct();
       break;
     case "USER_IS_ADDING_PRODUCT":
-      CatalogStore.userIsAddingProduct(true);
+      CatalogStore.onUserIsAddingProduct(true);
       break;
     case "USER_IS_NOT_ADDING_PRODUCT":
-      CatalogStore.userIsAddingProduct(false);
+      CatalogStore.onUserIsAddingProduct(false);
       break;
     case "USER_HAS_SEARCHED_PRODUCTS":
-      CatalogStore.searchProducts(payload.search);
+      CatalogStore.onSearchProducts(payload.search);
       break;
     case "USER_HAS_PRESSED_ESC":
-      CatalogStore.userHasPressedEsc();
+      CatalogStore.onUserHasPressedEsc();
       break;
   }
 });
