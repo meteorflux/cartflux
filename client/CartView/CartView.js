@@ -38,5 +38,9 @@ Template.CartView.events({
 
 // CartView subscriptions
 Template.CartView.onCreated(function () {
-  CartStore.subsProductsInCart(this);
+  var self = this;
+  self.autorun(function(){
+    self.subscribe("Catalog.productsInCart", CartStore.getItemsArray());
+    self.subscribe("Cart.userCart", CartStore.getCartId());
+  });
 });

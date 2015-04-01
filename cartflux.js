@@ -2,7 +2,7 @@ if (Meteor.isClient){
   Template.body.onRendered(function(){
     $('body').on('keydown',function(event) {
       if (event.which === 27){
-        Dispatcher.dispatch({actionType: "USER_HAS_PRESSED_ESC"});
+        Dispatcher.dispatch({actionType: "USER_CANCELED"});
       }
     });
   });

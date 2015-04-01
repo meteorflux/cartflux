@@ -6,10 +6,8 @@ Template.AddProductView.helpers({
       $('#product_name').val('');
       $('#product_price').val('');
       return "";
-    } else if (adding_product === "wrong-name") {
-      return "Please provide a valid name.";
-    } else if (adding_product === "wrong-price") {
-      return "Please provide a valid price.";
+    } else {
+      return adding_product.reason;
     }
   }
 });
@@ -19,7 +17,7 @@ Template.AddProductView.events({
     Dispatcher.dispatch({actionType: "USER_IS_ADDING_PRODUCT"});
   },
   'click .close-add-product': function(){
-    Dispatcher.dispatch({actionType: "USER_IS_NOT_ADDING_PRODUCT"});
+    Dispatcher.dispatch({actionType: "USER_CANCELED"});
   },
   'click .add_product': function(){
     Dispatcher.dispatch({ actionType: "ADD_PRODUCT", product: {
@@ -34,12 +32,12 @@ Template.AddProductView.onCreated(function(){
   this.autorun(function(){
     var adding_product = CatalogStore.getUserIsAddingProduct();
     if (adding_product === true) {
-      $('#modal1').openModal({dismissible: false});
+      $('#AddProductModal').openModal({dismissible: false});
     } else if (adding_product === false) {
-      $('#modal1').closeModal();
+      $('#AddProductModal').closeModal();
     }
     $('#lean-overlay').click(function(){
-      Dispatcher.dispatch({actionType: "USER_IS_NOT_ADDING_PRODUCT"});
+      Dispatcher.dispatch({actionType: "USER_CANCELED"});
     });
   });
 });

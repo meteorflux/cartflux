@@ -1,0 +1,82 @@
+<template name="LoginModalView">
+  <!-- Login Modal -->
+  <div id="LoginModal" class="modal modal-fixed-footer">
+    {{#if login}}
+      {{> LoginForm}}
+    {{else}}
+      {{> CreateAccountForm}}
+    {{/if}}
+  </div>
+</template>
+
+<template name="LoginForm">
+  <div class="modal-content">
+    <h4>Login</h4>
+    <form id="login-form" action="#">
+      <div class="row">
+        <div class="input-field col s6">
+          <input id="user" name="user" type="text" class="validate">
+          <label for="user">Username or Email</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s6">
+          <input id="password" name="password" type="password" class="validate">
+          <label for="password">Password</label>
+        </div>
+      </div>
+      <button class="btn waves-effect waves-light" type="submit" name="action">
+        LOGIN
+        <i class="mdi-social-person right"></i>
+      </button>
+    </form>
+    <div class="red-text text-lighten-2">{{login_error}}</div>
+    <br />
+    <div class="">
+      No Account? Create one!<br>
+      <button class="waves-effect waves-light btn deep-purple lighten-2 create-account">CREATE ACCOUNT</button></div>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="waves-effect waves-green btn-flat close">Cancel</a>
+  </div>
+</template>
+
+<template name="CreateAccountForm">
+  <div class="modal-content">
+    <h4>Create Account</h4>
+    <form id="create-form" action="#">
+      <div class="row">
+        <div class="input-field col s12 m6">
+          <input id="username" name="username" type="text" class="validate">
+          <label for="username">Username</label>
+        </div>
+        <div class="input-field col s12 m6">
+          <input id="email" name="email" type="email" class="validate">
+          <label for="email">Email</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12 m6">
+          <input id="password" name="password" type="password" class="validate">
+          <label for="password">Password</label>
+        </div>
+        <div class="input-field col s12 m6">
+          <input id="retry_password" name="retry_password" type="password" class="validate">
+          <label for="retry_password">Retype Password</label>
+        </div>
+      </div>
+      <button class="btn waves-effect waves-light" type="submit" name="action">
+        CREATE ACCOUNT
+        <i class="mdi-social-person-add right"></i>
+      </button>
+    </form>
+    <div class="red-text text-lighten-2">{{create_error}}</div>
+    <br />
+    <div class="">
+      Do you have an account? Login!<br>
+      <button class="waves-effect waves-light btn deep-purple lighten-2 login">LOGIN</button></div>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="waves-effect waves-green btn-flat close">Cancel</a>
+  </div>
+</template>
