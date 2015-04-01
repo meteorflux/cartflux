@@ -17,5 +17,5 @@ Template.CatalogView.events({
 
 // CatalogView Subscriptions
 Template.CatalogView.onCreated(function () {
-  CatalogStore.subsSearchedProducts(this);
+  CatalogStore.subSearchedProducts(this);
 });
