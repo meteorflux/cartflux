@@ -37,7 +37,7 @@ var newCartStore = function(Cart) {
       Meteor.call('CartStore.removeCartItem', id);
     },
     onRemoveProduct: function(product_id){
-      CartStore.onRemoveCartItem(Cart.findOne({product_id: product_id}));
+      Meteor.call('CartStore.removeProduct', product_id);
     },
     onLoginSucceed: function(){
       // change all random_ids by userIds
@@ -74,6 +74,9 @@ var newCartStore = function(Cart) {
     },
     'CartStore.removeCartItem': function(id){
       Cart.remove(id);
+    },
+    'CartStore.removeProduct': function(product_id){
+      Cart.remove({product_id: product_id});
     }
   });
 
