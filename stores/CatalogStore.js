@@ -19,7 +19,7 @@ var newCatalogStore = function(Catalog){
       } else if ((price === '')||(!$.isNumeric(price))){
         error = new Meteor.Error("wrong-price","Please provide a valid price.");
       } else {
-        Catalog.insert({name:name, price:price});
+        Meteor.call('CatalogStore.addProduct', {name:name, price:price});
       }
       adding_product.set(error);
     },
@@ -28,7 +28,7 @@ var newCatalogStore = function(Catalog){
       CatalogStore.onAddProduct("Product "+number, number);
     },
     onRemoveProduct: function(id){
-      Catalog.remove(id);
+      Meteor.call('CatalogStore.removeProduct', id);
     },
     onUserIsAddingProduct: function(state){
       adding_product.set(state);
@@ -56,6 +56,16 @@ var newCatalogStore = function(Catalog){
       });
     }
   };
+
+  // CatalogStore Meteor Methods
+  Meteor.methods({
+    'CatalogStore.addProduct': function(product){
+      Catalog.insert({name:product.name, price:product.price});
+    },
+    'CatalogStore.removeProduct': function(id){
+      Catalog.remove(id);
+    }
+  });
 
   // CatalogStore Publications
   if (Meteor.isServer) {

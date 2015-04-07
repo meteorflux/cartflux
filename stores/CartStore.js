@@ -6,7 +6,7 @@ var newCartStore = function(Cart) {
 
   // Reactive Vars
   if(Meteor.isClient){
-    // stores the id used by the cart. A random id or the user id. Using Sessions so it's not affected by hot reloads
+    // stores the id used by the cart. A random id or the user id. It's using Sessions so it's not affected by hot reloads
     Session.setDefault("CartStore.cartId", Meteor.userId() || Random.id());
   }
 
@@ -17,24 +17,24 @@ var newCartStore = function(Cart) {
       var cart_id   = Session.get("CartStore.cartId");
       var cart_item = Cart.findOne({product_id: product_id, cart_id: cart_id });
       if ( !cart_item ) {
-        Cart.insert({quantity: 1, product_id: product_id, cart_id: Session.get("CartStore.cartId")});
+        Meteor.call('CartStore.addCartItem', product_id, Session.get('CartStore.cartId'));
       } else {
         CartStore.onIncreaseCartItem(cart_item._id);
       }
     },
     onIncreaseCartItem: function(id){
-      Cart.update(id, {$inc: {quantity: 1}});
+      Meteor.call('CartStore.increaseCartItem', id);
     },
     onDecreaseCartItem: function(id){
       var cart_item = Cart.findOne(id);
       if ( cart_item.quantity === 1 ){
         CartStore.onRemoveCartItem(id);
       } else {
-        Cart.update(id, {$inc: {quantity: -1}});
+        Meteor.call('CartStore.decreaseCartItem', id);
       }
     },
     onRemoveCartItem: function(id){
-      Cart.remove(id);
+      Meteor.call('CartStore.removeCartItem', id);
     },
     onRemoveProduct: function(product_id){
       CartStore.onRemoveCartItem(Cart.findOne({product_id: product_id}));
@@ -58,10 +58,22 @@ var newCartStore = function(Cart) {
     }
   };
 
-  // CartStore Methods
+  // CartStore Meteor Methods
   Meteor.methods({
     'CartStore.updateAllCartIds': function(old_id){
       Cart.update({cart_id: old_id},{$set:{cart_id: this.userId}}, {multi:true});
+    },
+    'CartStore.addCartItem': function(product_id, cart_id){
+      Cart.insert({quantity: 1, product_id: product_id, cart_id: cart_id});
+    },
+    'CartStore.increaseCartItem': function(id){
+      Cart.update(id, {$inc: {quantity: 1}});
+    },
+    'CartStore.decreaseCartItem': function(id){
+      Cart.update(id, {$inc: {quantity: -1}});
+    },
+    'CartStore.removeCartItem': function(id){
+      Cart.remove(id);
     }
   });
 
@@ -72,7 +84,7 @@ var newCartStore = function(Cart) {
     });
   }
 
-  // CartStore Callbacks
+  // CartStore Register
   CartStore.tokenId = Dispatcher.register(function(payload){
     switch(payload.actionType){
       case "ADD_CART_ITEM":
