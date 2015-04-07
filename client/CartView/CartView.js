@@ -40,7 +40,7 @@ Template.CartView.events({
 Template.CartView.onCreated(function () {
   var self = this;
   self.autorun(function(){
-    self.subscribe("Catalog.productsInCart", CartStore.getItemsArray());
+    self.subscribe("Catalog.productsInCart", CartStore.getProductsInCart());
     self.subscribe("Cart.userCart", CartStore.getCartId());
   });
 });

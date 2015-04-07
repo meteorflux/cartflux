@@ -24,6 +24,13 @@
             {{/each}}
           </tbody>
         </table>
+        <ul class="pagination">
+          <li class="pagination-left {{left_arrow_class}}"><a href="#!"><i class="mdi-navigation-chevron-left"></i></a></li>
+          {{#each pages}}
+            <li class="{{class}} pagination-item" data-page="{{number}}"><a href="#!">{{number}}</a></li>
+          {{/each}}
+          <li class="pagination-right {{right_arrow_class}}"><a href="#!"><i class="mdi-navigation-chevron-right"></i></a></li>
+       </ul>
       {{else}}
         <div class="preloader-wrapper big active">
          <div class="spinner-layer spinner-red-only">

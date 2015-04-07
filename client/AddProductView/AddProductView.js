@@ -25,6 +25,9 @@ Template.AddProductView.events({
   },
   'click .add_another_product': function(){
     Dispatcher.dispatch({ actionType: "ADD_ANOTHER_PRODUCT" });
+  },
+  'click .add_another_10_products': function(){
+    Dispatcher.dispatch({ actionType: "ADD_ANOTHER_10_PRODUCTS" });
   }
 });
 

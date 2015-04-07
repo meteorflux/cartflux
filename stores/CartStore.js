@@ -50,7 +50,7 @@ var newCartStore = function(Cart) {
     getItems: function(){
       return Cart.find({cart_id: Session.get("CartStore.cartId")});
     },
-    getItemsArray: function(){
+    getProductsInCart: function(){
       return CartStore.getItems().fetch();
     },
     getCartId: function(){
