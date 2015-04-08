@@ -33,6 +33,7 @@ materialize:materialize@0.96.1
 meteor@1.1.6
 meteor-platform@1.2.2
 meteorflux:dispatcher@1.0.1
+meteorhacks:flow-router@1.2.0
 meteortoys:toykit@0.2.2
 minifiers@1.1.5
 minimongo@1.0.8

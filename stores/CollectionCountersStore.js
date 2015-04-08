@@ -11,12 +11,14 @@ var newCollectionCountersStore = function(){
   // Object
   var CollectionCountersStore = {
     // Getters
-    getCatalogCounter: function(){
-      var catalog_counter = CollectionCounters.findOne('Catalog');
-      if ( catalog_counter ) {
-        return catalog_counter.count;
-      } else {
-        return 0;
+    get: {
+      numberOfProducts: function(){
+        var number_of_products = CollectionCounters.findOne('Catalog');
+        if ( number_of_products ) {
+          return number_of_products.count;
+        } else {
+          return 0;
+        }
       }
     }
   };
@@ -24,7 +26,7 @@ var newCollectionCountersStore = function(){
   // Subscriptions
   if (Meteor.isClient)
     Tracker.autorun(function(){
-      Meteor.subscribe('CollectionCountersStore.CatalogCounter', CatalogStore.getSearchQuery());
+      Meteor.subscribe('CollectionCountersStore.CatalogCounter', CatalogStore.get.searchQuery());
     });
 
 
