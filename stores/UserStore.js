@@ -10,66 +10,70 @@ var newUserStore = function(){
   // UserStore Object
   var UserStore = {
     // Callbacks
-    onUserWantsToLogin: function(){
-      user_is_signing.set(true);
-      login_or_create.set('login');
-    },
-    onUserWantsToCreateAccount: function(){
-      user_is_signing.set(true);
-      login_or_create.set('create');
-    },
-    onUserCanceled: function(){
-      user_is_signing.set(false);
-    },
-    onLoginFailed: function(error){
-      login_error.set(error);
-    },
-    onLoginSucceed: function(){
-      login_error.set('');
-      create_error.set('');
-      user_is_signing.set(false);
-    },
-    onCreateAccountFailed: function(error){
-      create_error.set(error);
+    on: {
+      userWantsToLogin: function(){
+        user_is_signing.set(true);
+        login_or_create.set('login');
+      },
+      userWantsToCreateAccount: function(){
+        user_is_signing.set(true);
+        login_or_create.set('create');
+      },
+      userCanceled: function(){
+        user_is_signing.set(false);
+      },
+      loginFailed: function(error){
+        login_error.set(error);
+      },
+      createAccountFailed: function(error){
+        create_error.set(error);
+      },
+      loginOrCreateSucceed: function(){
+        login_error.set('');
+        create_error.set('');
+        user_is_signing.set(false);
+      }
     },
 
     // Getters
-    getUserIsSigning: function(){
-      return user_is_signing.get();
-    },
-    getLoginOrCreate: function(){
-      return login_or_create.get();
-    },
-    getLoginError: function(){
-      return login_error.get();
-    },
-    getCreateAccountError: function(){
-      return create_error.get();
+    get: {
+      userIsSigning: function(){
+        return user_is_signing.get();
+      },
+      loginOrCreate: function(){
+        return login_or_create.get();
+      },
+      loginError: function(){
+        return login_error.get();
+      },
+      createAccountError: function(){
+        return create_error.get();
+      }
     }
   };
 
   UserStore.tokenId = Dispatcher.register(function(payload){
     switch(payload.actionType){
       case "USER_WANTS_TO_LOGIN":
-        UserStore.onUserWantsToLogin();
+        UserStore.on.userWantsToLogin();
         break;
       case "USER_WANTS_TO_CREATE_ACCOUNT":
-        UserStore.onUserWantsToCreateAccount();
+        UserStore.on.userWantsToCreateAccount();
         break;
       case "USER_CANCELED":
-        UserStore.onUserCanceled();
-        break;
-      case "LOGIN":
-        UserStore.onLogin(payload.username_or_email, payload.password);
+        UserStore.on.userCanceled();
         break;
       case "CREATE_ACCOUNT_FAILED":
-        UserStore.onCreateAccountFailed(payload.error);
+        UserStore.on.createAccountFailed(payload.error);
         break;
       case "LOGIN_FAILED":
-        UserStore.onLoginFailed(payload.error);
+        UserStore.on.loginFailed(payload.error);
         break;
       case "LOGIN_SUCCEED":
-        UserStore.onLoginSucceed();
+        UserStore.on.loginOrCreateSucceed();
+        break;
+      case "CREATE_ACCOUNT_SUCCEED":
+        UserStore.on.loginOrCreateSucceed();
         break;
     }
   });

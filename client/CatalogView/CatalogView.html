@@ -25,11 +25,11 @@
           </tbody>
         </table>
         <ul class="pagination">
-          <li class="pagination-left {{left_arrow_class}}"><a href="#!"><i class="mdi-navigation-chevron-left"></i></a></li>
+          <li class="pagination-left {{left_arrow_class}}"><a href="{{left_arrow_url}}"><i class="mdi-navigation-chevron-left"></i></a></li>
           {{#each pages}}
-            <li class="{{class}} pagination-item" data-page="{{number}}"><a href="#!">{{number}}</a></li>
+            <li class="{{item_class}} pagination-item" data-page="{{item_number}}"><a href="{{item_url}}">{{item_number}}</a></li>
           {{/each}}
-          <li class="pagination-right {{right_arrow_class}}"><a href="#!"><i class="mdi-navigation-chevron-right"></i></a></li>
+          <li class="pagination-right {{right_arrow_class}}"><a href="{{right_arrow_url}}"><i class="mdi-navigation-chevron-right"></i></a></li>
        </ul>
       {{else}}
         <div class="preloader-wrapper big active">

@@ -1,7 +1,7 @@
 Template.AddProductView.helpers({
   catalog_error: function(){
     // process the error in the frontend
-    var adding_product = CatalogStore.getUserIsAddingProduct();
+    var adding_product = CatalogStore.get.userIsAddingProduct();
     if (adding_product === false){
       $('#product_name').val('');
       $('#product_price').val('');
@@ -33,7 +33,7 @@ Template.AddProductView.events({
 
 Template.AddProductView.onCreated(function(){
   this.autorun(function(){
-    var adding_product = CatalogStore.getUserIsAddingProduct();
+    var adding_product = CatalogStore.get.userIsAddingProduct();
     if (adding_product === true) {
       $('#AddProductModal').openModal({dismissible: false});
     } else if (adding_product === false) {

@@ -27,7 +27,7 @@ UserActions = {
         if (error) {
           Dispatcher.dispatch({ actionType: "CREATE_ACCOUNT_FAILED", error: error });
         } else {
-          Dispatcher.dispatch({ actionType: "LOGIN_SUCCEED" }); // User is logged in, so we use the same action
+          Dispatcher.dispatch({ actionType: "CREATE_ACCOUNT_SUCCEED" }); // User is logged in, so we use the same action
         }
       });
     }

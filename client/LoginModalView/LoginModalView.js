@@ -1,3 +1,21 @@
+Template.LoginModalView.helpers({
+  login: function(){
+    return UserStore.get.loginOrCreate() === 'login';
+  }
+});
+
+Template.CreateAccountForm.helpers({
+  create_error: function(){
+    return UserStore.get.createAccountError().reason;
+  }
+});
+
+Template.LoginForm.helpers({
+  login_error: function(){
+    return UserStore.get.loginError().reason;
+  }
+});
+
 Template.LoginModalView.events({
   'click .close': function(){
     Dispatcher.dispatch({actionType: "USER_CANCELED"});
@@ -30,27 +48,9 @@ Template.CreateAccountForm.events({
   }
 });
 
-Template.LoginModalView.helpers({
-  login: function(){
-    return UserStore.getLoginOrCreate() === 'login';
-  }
-});
-
-Template.CreateAccountForm.helpers({
-  create_error: function(){
-    return UserStore.getCreateAccountError().reason;
-  }
-});
-
-Template.LoginForm.helpers({
-  login_error: function(){
-    return UserStore.getLoginError().reason;
-  }
-});
-
 Template.LoginModalView.onCreated(function(){
   this.autorun(function(){
-    var user_is_signing = UserStore.getUserIsSigning();
+    var user_is_signing = UserStore.get.userIsSigning();
     if (user_is_signing !== false) {
       $('#LoginModal').openModal({dismissible: false});
     } else if (user_is_signing === false) {

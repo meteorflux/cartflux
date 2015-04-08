@@ -1,35 +1,37 @@
 // CatalogView Helpers
 Template.CatalogView.helpers({
   catalog_products: function(){
-    return CatalogStore.getSearchedProducts();
+    return CatalogStore.get.searchedProducts();
   },
   left_arrow_class: function(){
-    var actual_page = CatalogStore.getActualPage();
-    if (actual_page === 1) {
+    if (CatalogRouter.is.firstPage())
       return "disabled";
-    } else {
-      return "waves-effect";
-    }
+    return "waves-effect";
+  },
+  left_arrow_url: function(){
+    return CatalogRouter.get.previousPageUrl();
   },
   right_arrow_class: function(){
-    var actual_page = CatalogStore.getActualPage();
-    var total_pages = CatalogStore.getNumberOfPages();
-    if (actual_page === total_pages) {
+    if (CatalogRouter.is.lastPage())
       return "disabled";
-    } else {
-      return "waves-effect";
-    }
+    return "waves-effect";
+  },
+  right_arrow_url: function(){
+    return CatalogRouter.get.nextPageUrl();
   },
   pages: function(){
-    var total_pages = CatalogStore.getNumberOfPages();
-    var actual_page = CatalogStore.getActualPage();
+    var total_pages = CatalogRouter.get.numberOfPages();
+    var actual_page = CatalogRouter.get.actualPage();
     var pages_array = [];
     for (var i = 1; i <= total_pages; i++ ){
-      var item = { number: i };
+      var item = {
+        item_number: i,
+        item_url: CatalogRouter.get.productPageUrl(i)
+      };
       if (i === actual_page) {
-        item.class = "active";
+        item.item_class = "active";
       } else {
-        item.class = "waves-effect";
+        item.item_class = "waves-effect";
       }
       pages_array.push(item);
     }
@@ -44,28 +46,10 @@ Template.CatalogView.events({
   },
   'click .remove_product': function(){
     Dispatcher.dispatch({ actionType: "REMOVE_PRODUCT", product: this });
-  },
-  'click .pagination-item': function(event){
-    event.preventDefault();
-    var target_page = Number($(event.currentTarget).attr("data-page"));
-    Dispatcher.dispatch({ actionType: "UWT_GO_TO_PAGE", target_page: target_page});
-  },
-  'click .pagination-left': function(){
-    event.preventDefault();
-    var actual_page = CatalogStore.getActualPage();
-    if (actual_page !== 1)
-      Dispatcher.dispatch({ actionType: "UWT_GO_TO_PAGE", target_page: actual_page - 1 });
-  },
-  'click .pagination-right': function(){
-    event.preventDefault();
-    var actual_page = CatalogStore.getActualPage();
-    var total_pages = CatalogStore.getNumberOfPages();
-    if (actual_page !== total_pages)
-      Dispatcher.dispatch({ actionType: "UWT_GO_TO_PAGE", target_page: actual_page + 1 });
-  },
+  }
 });
 
 // CatalogView Subscriptions
 Template.CatalogView.onCreated(function () {
-  CatalogStore.subSearchedProducts(this);
+  CatalogStore.subscriptions.searchedProducts(this);
 });
