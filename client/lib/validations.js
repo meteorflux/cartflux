@@ -1,7 +1,4 @@
-if ( typeof Libs === "undefined" )
-  Libs = {};
-
-Libs.Validations = {
+var validations = {
   trimInput: function(value) {
       return value.replace(/^\s*|\s*$/g, '');
   },
@@ -34,3 +31,5 @@ Libs.Validations = {
       return true;
   }
 };
+
+Dependency.add('Libraries.Validations', validations);

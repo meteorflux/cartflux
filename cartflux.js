@@ -1,5 +1,6 @@
 if (Meteor.isClient){
   Template.body.onRendered(function(){
+    // On ESC dispatch USER_CANCELED
     $('body').on('keydown',function(event) {
       if (event.which === 27){
         Dispatcher.dispatch({actionType: "USER_CANCELED"});

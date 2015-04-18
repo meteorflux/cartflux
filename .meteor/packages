@@ -11,3 +11,6 @@ accounts-password
 materialize:materialize
 msavin:mongol
 meteorhacks:flow-router
+meteorhacks:flow-layout
+reactive-dict
+meteorflux:reactive-dependency

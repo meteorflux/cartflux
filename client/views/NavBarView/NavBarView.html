@@ -1,0 +1,56 @@
+<template name="NavBarView">
+  <header>
+    <!-- Dropdown -->
+    <ul id="dropdown1" class="dropdown-content">
+      <li><a target="_blank" href="https://github.com/MeteorFlux/Dispatcher">MeteorFlux</a></li>
+      <li><a target="_blank" href="https://github.com/MeteorFlux/CartFlux">CartFlux</a></li>
+    </ul>
+    <!-- NavBar -->
+    <div class="">
+      <nav>
+        <div class="nav-wrapper container">
+          <a href="/" class="brand-logo">CartFlux</a>
+          <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+          <ul class="right hide-on-med-and-down">
+            <li class="no-bg">
+              <form>
+                <div class="input-field right">
+                  <input id="search" type="text" required>
+                  <label for="search"><i class="mdi-action-search"></i></label>
+                </div>
+              </form>
+            </li>
+            {{#if currentUser}}
+              {{#if loggingIn}}
+                <li class="no-bg"><button class="btn waves-effect waves-light">LOGIN NOW...</button></li>
+              {{else}}
+                <li class="no-bg"><button class="btn waves-effect waves-light navbar-logout">LOG OUT</button></li>
+              {{/if}}
+            {{else}}
+              <li class="no-bg">
+                <button class="btn waves-effect waves-light navbar-login teal lighten-2">LOGIN</button>
+                <button class="btn waves-effect waves-light navbar-sign-up deep-purple lighten-3">CREATE ACCOUNT</button>
+              </li>
+            {{/if}}
+            <!-- Dropdown Trigger -->
+            <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Useful Links<i class="mdi-navigation-arrow-drop-down right"></i></a></li>
+          </ul>
+          <ul class="side-nav" id="mobile-demo">
+            {{#if currentUser}}
+              {{#if loggingIn}}
+                <li><a class="navbar-login">Login now...</a></li>
+              {{else}}
+                <li><a class="navbar-logout" href="">Log out</a></li>
+              {{/if}}
+            {{else}}
+              <li><a class="navbar-login" href="">Login</a></li>
+              <li><a class="navbar-sign-up" href="">Create Account</a></li>
+            {{/if}}
+            <li><a target="_blank" href="https://github.com/MeteorFlux/Dispatcher">MeteorFlux</a></li>
+            <li><a target="_blank" href="https://github.com/MeteorFlux/CartFlux">CartFlux</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+  </header>
+</template>

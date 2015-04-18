@@ -1,3 +1,10 @@
+// Dependencies
+var CatalogStore, CartStore;
+Dependency.autorun(function(){
+  CatalogStore = Dependency.get('CatalogStore');
+  CartStore    = Dependency.get('CartStore');
+});
+
 // CartView helpers
 Template.CartView.helpers({
   cart_items: function(){
@@ -40,7 +47,7 @@ Template.CartView.events({
 Template.CartView.onCreated(function () {
   var self = this;
   self.autorun(function(){
-    self.subscribe("Catalog.productsInCart", CartStore.get.productsInCart());
-    self.subscribe("Cart.userCart", CartStore.get.cartId());
+    self.subscribe("CatalogStore.productsInCart", CartStore.get.productsInCart());
+    self.subscribe("CartStore.userCart", CartStore.get.cartId());
   });
 });

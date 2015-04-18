@@ -1,3 +1,11 @@
+// Dependencies
+var UserStore   = null,
+    UserActions = null;
+Dependency.autorun(function(){
+  UserStore   = Dependency.get('UserStore');
+  UserActions = Dependency.get('UserActions');
+});
+
 Template.NavBarView.helpers({
   'user_wants_to_login': function(){
     return UserStore.getUserWantsToLogin();
@@ -24,4 +32,5 @@ Template.NavBarView.events({
 
 Template.NavBarView.onRendered(function(){
   $(".dropdown-button").dropdown({ hover: false });
+  $(".button-collapse").sideNav();
 });

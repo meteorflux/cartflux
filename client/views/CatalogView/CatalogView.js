@@ -1,7 +1,15 @@
+// Dependencies
+var CatalogStore, CatalogRouter, CountersStore;
+Dependency.autorun(function(){
+  CatalogStore  = Dependency.get('CatalogStore');
+  CatalogRouter = Dependency.get('CatalogRouter');
+  CountersStore = Dependency.get('CountersStore');
+});
+
 // CatalogView Helpers
 Template.CatalogView.helpers({
   catalog_products: function(){
-    return CatalogStore.get.searchedProducts();
+    return CatalogStore.get.productsInPage();
   },
   left_arrow_class: function(){
     if (CatalogRouter.is.firstPage())
@@ -36,6 +44,9 @@ Template.CatalogView.helpers({
       pages_array.push(item);
     }
     return pages_array;
+  },
+  productsInPageReady: function () {
+    return CatalogStore.get.productsInPageReady();
   }
 });
 
@@ -51,5 +62,6 @@ Template.CatalogView.events({
 
 // CatalogView Subscriptions
 Template.CatalogView.onCreated(function () {
-  CatalogStore.subscriptions.searchedProducts(this);
+  //CatalogStore.subscriptions.searchedProducts(this);
+  CountersStore.subscriptions.catalogCounter(this);
 });
