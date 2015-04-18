@@ -1,3 +1,9 @@
+// Dependencies
+var CatalogStore;
+Dependency.autorun(function(){
+  CatalogStore = Dependency.get('CatalogStore');
+});
+
 Template.AddProductView.helpers({
   catalog_error: function(){
     // process the error in the frontend

@@ -1,3 +1,10 @@
+// Dependencies
+var UserStore, UserActions;
+Dependency.autorun(function(){
+  UserStore   = Dependency.get('UserStore');
+  UserActions = Dependency.get('UserActions');
+});
+
 Template.LoginModalView.helpers({
   login: function(){
     return UserStore.get.loginOrCreate() === 'login';
