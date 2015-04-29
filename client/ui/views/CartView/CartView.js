@@ -8,7 +8,7 @@ Dependency.autorun(function(){
 // CartView helpers
 Template.CartView.helpers({
   cart_items: function(){
-    return cartStore.get.items();
+    return cartStore.getItems();
   },
   product: function(){
     return catalogStore.getOneProduct(this.product_id);
@@ -19,14 +19,14 @@ Template.CartView.helpers({
   },
   total_cart_price: function(){
     var total = 0;
-    cartStore.get.items().forEach(function(cart_item){
+    cartStore.getItems().forEach(function(cart_item){
       var unit_price = catalogStore.getOneProduct(cart_item.product_id).price;
       total = total + unit_price * cart_item.quantity;
     });
     return total;
   },
   cart_items_count: function(){
-    return cartStore.get.items().count();
+    return cartStore.getItems().count();
   }
 });
 
@@ -47,8 +47,7 @@ Template.CartView.events({
 Template.CartView.onCreated(function () {
   var self = this;
   self.autorun(function(){
-    self.subscribe("CatalogStore.productsInCart", cartStore.get.productsInCart());
-    self.subscribe("CartStore.userCart", cartStore.get.cartId());
-    console.log("subscribing");
+    self.subscribe("CatalogStore.productsInCart", cartStore.getProductsInCart());
+    self.subscribe("CartStore.userCart", cartStore.getCartId());
   });
 });
