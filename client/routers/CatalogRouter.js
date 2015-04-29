@@ -24,11 +24,11 @@ CatalogRouter = function(){
   // Goers
   self.go = {
     firstPage: function(){
-      FlowRouter.go( mainRouter.get.route('catalog') + 1 );
+      FlowRouter.go( mainRouter.getRoute('catalog') + 1 );
     },
     lastPage: function(){
       var last_page = self.get.numberOfPages();
-      FlowRouter.go( mainRouter.get.route('catalog') + last_page );
+      FlowRouter.go( mainRouter.getRoute('catalog') + last_page );
     }
   };
 
@@ -53,16 +53,16 @@ CatalogRouter = function(){
       return pages;
     },
     productPageUrl: function(page) {
-      return mainRouter.get.route('catalog') + (page || "");
+      return mainRouter.getRoute('catalog') + (page || "");
     },
     nextPageUrl: function() {
       if (!self.is.lastPage())
-        return mainRouter.get.route('catalog') + (actualPage.get() + 1);
+        return mainRouter.getRoute('catalog') + (actualPage.get() + 1);
       return "";
     },
     previousPageUrl: function(){
       if (!self.is.firstPage())
-        return mainRouter.get.route('catalog') + (actualPage.get() - 1);
+        return mainRouter.getRoute('catalog') + (actualPage.get() - 1);
       return "";
     },
     productsPerPage: function(){
