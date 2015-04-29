@@ -1,5 +1,5 @@
 // Creator
-var CartStore = function () {
+CartStore = function () {
   var self = this;
 
   // Reactive Vars

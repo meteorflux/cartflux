@@ -1,4 +1,4 @@
-var CountersStore = function(){
+CountersStore = function(){
   var self = this;
 
   // Dependencies
@@ -18,7 +18,7 @@ var CountersStore = function(){
   self.subscriptions = {
     catalogCounter: function(template){
       template.autorun(function(){
-        template.subscribe('CountersStore.CatalogCounter', CatalogStore.get.searchQuery());
+        template.subscribe('CountersStore.CatalogCounter', CatalogStore.getSearchQuery());
       });
     }
   };

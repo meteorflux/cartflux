@@ -1,32 +1,32 @@
 // Dependencies
-var CatalogStore, CartStore;
+var catalogStore, cartStore;
 Dependency.autorun(function(){
-  CatalogStore = Dependency.get('CatalogStore');
-  CartStore    = Dependency.get('CartStore');
+  catalogStore = Dependency.get('CatalogStore');
+  cartStore    = Dependency.get('CartStore');
 });
 
 // CartView helpers
 Template.CartView.helpers({
   cart_items: function(){
-    return CartStore.get.items();
+    return cartStore.get.items();
   },
   product: function(){
-    return CatalogStore.get.oneProduct(this.product_id);
+    return catalogStore.getOneProduct(this.product_id);
   },
   total_item_price: function(){
-    var unit_price = CatalogStore.get.oneProduct(this.product_id).price;
+    var unit_price = catalogStore.getOneProduct(this.product_id).price;
     return this.quantity * unit_price;
   },
   total_cart_price: function(){
     var total = 0;
-    CartStore.get.items().forEach(function(cart_item){
-      var unit_price = CatalogStore.get.oneProduct(cart_item.product_id).price;
+    cartStore.get.items().forEach(function(cart_item){
+      var unit_price = catalogStore.getOneProduct(cart_item.product_id).price;
       total = total + unit_price * cart_item.quantity;
     });
     return total;
   },
   cart_items_count: function(){
-    return CartStore.get.items().count();
+    return cartStore.get.items().count();
   }
 });
 
@@ -47,7 +47,8 @@ Template.CartView.events({
 Template.CartView.onCreated(function () {
   var self = this;
   self.autorun(function(){
-    self.subscribe("CatalogStore.productsInCart", CartStore.get.productsInCart());
-    self.subscribe("CartStore.userCart", CartStore.get.cartId());
+    self.subscribe("CatalogStore.productsInCart", cartStore.get.productsInCart());
+    self.subscribe("CartStore.userCart", cartStore.get.cartId());
+    console.log("subscribing");
   });
 });

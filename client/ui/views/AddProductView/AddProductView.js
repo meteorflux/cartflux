@@ -1,13 +1,13 @@
 // Dependencies
-var CatalogStore;
+var catalogStore;
 Dependency.autorun(function(){
-  CatalogStore = Dependency.get('CatalogStore');
+  catalogStore = Dependency.get('CatalogStore');
 });
 
 Template.AddProductView.helpers({
   catalog_error: function(){
     // process the error in the frontend
-    var adding_product = CatalogStore.get.userIsAddingProduct();
+    var adding_product = catalogStore.getUserIsAddingProduct();
     if (adding_product === false){
       $('#product_name').val('');
       $('#product_price').val('');
@@ -39,7 +39,7 @@ Template.AddProductView.events({
 
 Template.AddProductView.onCreated(function(){
   this.autorun(function(){
-    var adding_product = CatalogStore.get.userIsAddingProduct();
+    var adding_product = catalogStore.getUserIsAddingProduct();
     if (adding_product === true) {
       $('#AddProductModal').openModal({dismissible: false});
     } else if (adding_product === false) {

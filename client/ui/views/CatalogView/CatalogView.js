@@ -1,40 +1,40 @@
 // Dependencies
-var CatalogStore, CatalogRouter, CountersStore;
+var catalogStore, catalogRouter, countersStore;
 Dependency.autorun(function(){
-  CatalogStore  = Dependency.get('CatalogStore');
-  CatalogRouter = Dependency.get('CatalogRouter');
-  CountersStore = Dependency.get('CountersStore');
+  catalogStore  = Dependency.get('CatalogStore');
+  catalogRouter = Dependency.get('CatalogRouter');
+  countersStore = Dependency.get('CountersStore');
 });
 
 // CatalogView Helpers
 Template.CatalogView.helpers({
   catalog_products: function(){
-    return CatalogStore.get.productsInPage();
+    return catalogStore.getProductsInPage();
   },
   left_arrow_class: function(){
-    if (CatalogRouter.is.firstPage())
+    if (catalogRouter.is.firstPage())
       return "disabled";
     return "waves-effect";
   },
   left_arrow_url: function(){
-    return CatalogRouter.get.previousPageUrl();
+    return catalogRouter.get.previousPageUrl();
   },
   right_arrow_class: function(){
-    if (CatalogRouter.is.lastPage())
+    if (catalogRouter.is.lastPage())
       return "disabled";
     return "waves-effect";
   },
   right_arrow_url: function(){
-    return CatalogRouter.get.nextPageUrl();
+    return catalogRouter.get.nextPageUrl();
   },
   pages: function(){
-    var total_pages = CatalogRouter.get.numberOfPages();
-    var actual_page = CatalogRouter.get.actualPage();
+    var total_pages = catalogRouter.get.numberOfPages();
+    var actual_page = catalogRouter.get.actualPage();
     var pages_array = [];
     for (var i = 1; i <= total_pages; i++ ){
       var item = {
         item_number: i,
-        item_url: CatalogRouter.get.productPageUrl(i)
+        item_url: catalogRouter.get.productPageUrl(i)
       };
       if (i === actual_page) {
         item.item_class = "active";
@@ -46,7 +46,7 @@ Template.CatalogView.helpers({
     return pages_array;
   },
   productsInPageReady: function () {
-    return CatalogStore.get.productsInPageReady();
+    return catalogStore.getProductsInPageReady();
   }
 });
 
@@ -62,6 +62,5 @@ Template.CatalogView.events({
 
 // CatalogView Subscriptions
 Template.CatalogView.onCreated(function () {
-  //CatalogStore.subscriptions.searchedProducts(this);
-  CountersStore.subscriptions.catalogCounter(this);
+  countersStore.subscriptions.catalogCounter(this);
 });

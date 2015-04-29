@@ -1,13 +1,13 @@
 // Creator
-var CatalogRouter = function(){
+CatalogRouter = function(){
   var self = this;
 
   // Dependencies
-  var MainRouter   = null,
-      CatalogStore = null;
+  var mainRouter   = null,
+      catalogStore = null;
   Dependency.autorun(function(){
-    MainRouter   = Dependency.get('MainRouter');
-    CatalogStore = Dependency.get('CatalogStore');
+    mainRouter   = Dependency.get('MainRouter');
+    catalogStore = Dependency.get('CatalogStore');
   });
 
   // Reactive Vars
@@ -24,11 +24,11 @@ var CatalogRouter = function(){
   // Goers
   self.go = {
     firstPage: function(){
-      FlowRouter.go( MainRouter.get.route('catalog') + 1 );
+      FlowRouter.go( mainRouter.get.route('catalog') + 1 );
     },
     lastPage: function(){
       var last_page = self.get.numberOfPages();
-      FlowRouter.go( MainRouter.get.route('catalog') + last_page );
+      FlowRouter.go( mainRouter.get.route('catalog') + last_page );
     }
   };
 
@@ -48,21 +48,21 @@ var CatalogRouter = function(){
       return actualPage.get();
     },
     numberOfPages: function(){
-      var total_products = CatalogStore.get.numberOfProducts();
+      var total_products = catalogStore.getNumberOfProducts();
       var pages          = Math.ceil(total_products/productsPerPage.get());
       return pages;
     },
     productPageUrl: function(page) {
-      return MainRouter.get.route('catalog') + (page || "");
+      return mainRouter.get.route('catalog') + (page || "");
     },
     nextPageUrl: function() {
       if (!self.is.lastPage())
-        return MainRouter.get.route('catalog') + (actualPage.get() + 1);
+        return mainRouter.get.route('catalog') + (actualPage.get() + 1);
       return "";
     },
     previousPageUrl: function(){
       if (!self.is.firstPage())
-        return MainRouter.get.route('catalog') + (actualPage.get() - 1);
+        return mainRouter.get.route('catalog') + (actualPage.get() - 1);
       return "";
     },
     productsPerPage: function(){
@@ -94,7 +94,7 @@ var CatalogRouter = function(){
 
     // Subscriptions
     Tracker.autorun(function(){
-      var searchQuery     = CatalogStore.get.searchQuery();
+      var searchQuery     = catalogStore.getSearchQuery();
       var actualPage      = self.get.actualPage();
       var productsPerPage = self.get.productsPerPage();
 
